@@ -1,0 +1,34 @@
+version: '2'
+services:
+  demo-application:
+    image: altfatterz/customer-service
+    environment:
+    - LOGGING_FILE=/logs/demo-application.log
+    ports:
+    - "8082:8082"
+    volumes:
+    - log_volume:/logs
+  splunk:
+    image: splunk/splunk:7.2
+    hostname: splunk
+    environment:
+    - SPLUNK_START_ARGS=--accept-license
+    - SPLUNK_PASSWORD=password
+    - SPLUNK_ENABLE_LISTEN=9997
+    ports:
+    - "8000:8000"
+  splunkforwarder:
+    image: splunk/universalforwarder:7.2
+    hostname: splunkforwarder
+    environment:
+    - SPLUNK_START_ARGS=--accept-license --answer-yes
+    - SPLUNK_FORWARD_SERVER=splunk:9997
+    - SPLUNK_PASSWORD=password
+    - SPLUNK_ADD=monitor /logs
+    restart: always
+    depends_on:
+    - splunk
+    volumes:
+    - log_volume:/logs
+volumes:
+  log_volume:
