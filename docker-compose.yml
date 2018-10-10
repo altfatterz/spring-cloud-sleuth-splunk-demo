@@ -1,9 +1,25 @@
 version: '2'
 services:
-  demo-application:
+  edge-service:
+    image: altfatterz/edge-service
+    environment:
+    - LOGGING_FILE=/logs/edge-service.log
+    ports:
+    - "8080:8080"
+    volumes:
+    - log_volume:/logs
+  customer-client:
+    image: altfatterz/customer-client
+    environment:
+    - LOGGING_FILE=/logs/customer-client.log
+    ports:
+    - "8081:8081"
+    volumes:
+    - log_volume:/logs
+  customer-service:
     image: altfatterz/customer-service
     environment:
-    - LOGGING_FILE=/logs/demo-application.log
+    - LOGGING_FILE=/logs/customer-service.log
     ports:
     - "8082:8082"
     volumes:
