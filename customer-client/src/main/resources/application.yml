@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: customer-client
+
+  sleuth:
+    sampler:
+      probability: 1.0
+
+server:
+  port: 8081

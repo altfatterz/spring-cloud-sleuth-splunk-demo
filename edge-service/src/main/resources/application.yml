@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: edge-service
+
+  sleuth:
+    sampler:
+      probability: 1.0
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure.include: '*'
