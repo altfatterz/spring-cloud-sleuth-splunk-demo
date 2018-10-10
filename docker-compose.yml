@@ -1,50 +1,52 @@
-version: '2'
+version: '3'
 services:
   edge-service:
     image: altfatterz/edge-service
     environment:
-    - LOGGING_FILE=/logs/edge-service.log
+      - LOGGING_FILE=/logs/edge-service.log
+      - CUSTOMER_CLIENT_HOST=customer-client
     ports:
-    - "8080:8080"
+      - "8080:8080"
     volumes:
-    - log_volume:/logs
+      - log_volume:/logs
   customer-client:
     image: altfatterz/customer-client
     environment:
-    - LOGGING_FILE=/logs/customer-client.log
+      - LOGGING_FILE=/logs/customer-client.log
+      - CUSTOMER_SERVICE_HOST=customer-service
     ports:
-    - "8081:8081"
+      - "8081:8081"
     volumes:
-    - log_volume:/logs
+      - log_volume:/logs
   customer-service:
     image: altfatterz/customer-service
     environment:
-    - LOGGING_FILE=/logs/customer-service.log
+      - LOGGING_FILE=/logs/customer-service.log
     ports:
-    - "8082:8082"
+      - "8082:8082"
     volumes:
-    - log_volume:/logs
+      - log_volume:/logs
   splunk:
     image: splunk/splunk:7.2
     hostname: splunk
     environment:
-    - SPLUNK_START_ARGS=--accept-license
-    - SPLUNK_PASSWORD=password
-    - SPLUNK_ENABLE_LISTEN=9997
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=password
+      - SPLUNK_ENABLE_LISTEN=9997
     ports:
-    - "8000:8000"
+      - "8000:8000"
   splunkforwarder:
     image: splunk/universalforwarder:7.2
     hostname: splunkforwarder
     environment:
-    - SPLUNK_START_ARGS=--accept-license --answer-yes
-    - SPLUNK_FORWARD_SERVER=splunk:9997
-    - SPLUNK_PASSWORD=password
-    - SPLUNK_ADD=monitor /logs
+      - SPLUNK_START_ARGS=--accept-license --answer-yes
+      - SPLUNK_FORWARD_SERVER=splunk:9997
+      - SPLUNK_PASSWORD=password
+      - SPLUNK_ADD=monitor /logs
     restart: always
     depends_on:
-    - splunk
+      - splunk
     volumes:
-    - log_volume:/logs
+      - log_volume:/logs
 volumes:
   log_volume:

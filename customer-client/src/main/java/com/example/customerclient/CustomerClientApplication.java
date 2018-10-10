@@ -2,6 +2,7 @@ package com.example.customerclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -34,6 +35,9 @@ class CustomerRestController {
 
     private final RestTemplate restTemplate;
 
+    @Value("${customer.service.host:localhost}")
+    private String host;
+
     @Autowired
     public CustomerRestController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -43,7 +47,7 @@ class CustomerRestController {
     public List<Customer> getCustomers() {
         log.info("getting customers from the customer-service...");
 
-        ResponseEntity<List<Customer>> customers = restTemplate.exchange("http://localhost:8082",
+        ResponseEntity<List<Customer>> customers = restTemplate.exchange("http://" + host + ":8082",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Customer>>() {});
 
         return customers.getBody();

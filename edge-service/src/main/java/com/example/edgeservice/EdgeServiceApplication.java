@@ -1,5 +1,6 @@
 package com.example.edgeservice;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -15,11 +16,14 @@ public class EdgeServiceApplication {
         SpringApplication.run(EdgeServiceApplication.class, args);
     }
 
+    @Value("${customer.client.host:localhost}")
+    private String host;
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("path_route", r -> r.path("/")
-                        .uri("http://localhost:8081"))
+                        .uri("http://" + host + ":8081"))
                 .build();
     }
 
