@@ -19,10 +19,8 @@ public class CustomerServiceApplication {
     }
 
     @GetMapping("/")
-    public List<Customer> getCustomers() throws InterruptedException {
+    public List<Customer> getCustomers() {
         log.info("retrieving customers...");
-
-        Thread.sleep(500);
 
         return Arrays.asList(new Customer("John", "Doe"));
     }

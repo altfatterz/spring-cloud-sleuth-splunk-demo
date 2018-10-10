@@ -40,15 +40,11 @@ class CustomerRestController {
     }
 
     @GetMapping("/")
-    public List<Customer> getCustomers() throws InterruptedException {
+    public List<Customer> getCustomers() {
         log.info("getting customers from the customer-service...");
-
-        Thread.sleep(500);
 
         ResponseEntity<List<Customer>> customers = restTemplate.exchange("http://localhost:8082",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Customer>>() {});
-
-        Thread.sleep(500);
 
         return customers.getBody();
     }
