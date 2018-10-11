@@ -9,6 +9,6 @@ spring:
 server:
   port: 8081
 
-logging:
-  level:
-    org.springframework.cloud.sleuth: trace
+#logging:
+#  level:
+#    org.springframework.cloud.sleuth: trace

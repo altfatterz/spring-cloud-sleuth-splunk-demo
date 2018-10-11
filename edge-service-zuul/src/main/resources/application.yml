@@ -16,7 +16,6 @@ management:
 
 zuul:
   routes:
-    information-service:
-      path: /
+    customers:
       url: http://localhost:8081
 
