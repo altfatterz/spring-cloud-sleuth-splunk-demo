@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.List;
 
 @SpringBootApplication
@@ -44,7 +46,14 @@ class CustomerRestController {
     }
 
     @GetMapping("/")
-    public List<Customer> getCustomers() {
+    public List<Customer> getCustomers(HttpServletRequest request) {
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while(headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + ":" + request.getHeader(headerName));
+        }
+
         log.info("getting customers from the customer-service...");
 
         ResponseEntity<List<Customer>> customers = restTemplate.exchange("http://" + host + ":8082",

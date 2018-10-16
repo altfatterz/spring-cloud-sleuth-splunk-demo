@@ -10,3 +10,9 @@ http://localhost:8080/actuator/filters
 http://localhost:8080/actuator/routes
 
 https://reflectoring.io/tracing-with-spring-cloud-sleuth/
+
+
+
+`TraceWebClientAutoConfiguration` creates the `TracingClientHttpRequestInterceptor` interceptor
+
+****
