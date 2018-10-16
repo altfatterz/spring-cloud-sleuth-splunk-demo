@@ -16,3 +16,18 @@ https://reflectoring.io/tracing-with-spring-cloud-sleuth/
 `TraceWebClientAutoConfiguration` creates the `TracingClientHttpRequestInterceptor` interceptor
 
 ****
+
+```
+TracingFilter this is where the TracingContext is created:
+```
+
+Span span = handler.handleReceive(extractor, httpRequest);
+
+code in `Tracer`:
+
+```bash
+TraceContext.Builder newContextBuilder
+```
+
+
+`TraceAutoConfiguration` creates `Propagation.Factory`

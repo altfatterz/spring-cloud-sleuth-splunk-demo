@@ -19,4 +19,9 @@ public class EdgeServiceZuulApplication {
         return CustomSlf4jCustomCurrentTraceContext.create();
     }
 
+    @Bean
+    CustomTracingFilter customTracingFilter() {
+        return new CustomTracingFilter();
+    }
+
 }

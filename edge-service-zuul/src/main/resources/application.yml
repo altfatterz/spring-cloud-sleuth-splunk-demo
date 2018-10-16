@@ -6,9 +6,6 @@ spring:
     sampler:
       probability: 1.0
     propagation-keys: trId
-    log:
-      slf4j:
-        enabled: false
 
 server:
   port: 8080
