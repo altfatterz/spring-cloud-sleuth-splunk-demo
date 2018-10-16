@@ -3,6 +3,7 @@ package com.example.edgeservicezuul;
 import brave.internal.HexCodec;
 import brave.internal.Nullable;
 import brave.propagation.CurrentTraceContext;
+import brave.propagation.ExtraFieldPropagation;
 import brave.propagation.TraceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,8 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
 
         if (currentSpan != null) {
             String traceIdString = currentSpan.traceIdString();
-            MDC.put("hello", "dummy");
+
+            MDC.put("trId", ExtraFieldPropagation.get(currentSpan, "trId"));
             MDC.put("traceId", traceIdString);
             MDC.put(LEGACY_TRACE_ID_NAME, traceIdString);
             String parentId = currentSpan.parentId() != null ?
