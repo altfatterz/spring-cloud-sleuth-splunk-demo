@@ -6,6 +6,8 @@ initialization performed by Boot
 -->
 
 <included>
+    <property name="AUDIT_LOG_FILE" value="${AUDIT_LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/audit.log}"/>
+
     <property name="AUDIT_FILE_LOG_PATTERN" value="%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(%X{trId:-},){magenta} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"/>
 
     <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
