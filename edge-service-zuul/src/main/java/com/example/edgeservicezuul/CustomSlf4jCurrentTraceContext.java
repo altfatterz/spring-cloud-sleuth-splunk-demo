@@ -13,7 +13,7 @@ import org.springframework.cloud.sleuth.log.Slf4jCurrentTraceContext;
 /**
  * Copy of {Slf4jCurrentTraceContext} adding the "trId" into the MDC.
  */
-public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
+public class CustomSlf4jCurrentTraceContext extends CurrentTraceContext {
 
     // Backward compatibility for all logging patterns
     private static final String LEGACY_EXPORTABLE_NAME = "X-Span-Export";
@@ -24,17 +24,17 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
     private static final Logger log = LoggerFactory
             .getLogger(Slf4jCurrentTraceContext.class);
 
-    public static CustomSlf4jCustomCurrentTraceContext create() {
+    public static CustomSlf4jCurrentTraceContext create() {
         return create(CurrentTraceContext.Default.inheritable());
     }
 
-    public static CustomSlf4jCustomCurrentTraceContext create(CurrentTraceContext delegate) {
-        return new CustomSlf4jCustomCurrentTraceContext(delegate);
+    public static CustomSlf4jCurrentTraceContext create(CurrentTraceContext delegate) {
+        return new CustomSlf4jCurrentTraceContext(delegate);
     }
 
     final CurrentTraceContext delegate;
 
-    CustomSlf4jCustomCurrentTraceContext(CurrentTraceContext delegate) {
+    CustomSlf4jCurrentTraceContext(CurrentTraceContext delegate) {
         if (delegate == null)
             throw new NullPointerException("delegate == null");
         this.delegate = delegate;

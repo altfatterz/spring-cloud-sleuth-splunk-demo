@@ -1,6 +1,9 @@
 package com.example.customerclient;
 
+import brave.propagation.CurrentTraceContext;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -29,11 +32,19 @@ public class CustomerClientApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+
+    @Bean
+    public CurrentTraceContext currentTraceContext() {
+        return CustomSlf4jCurrentTraceContext.create();
+    }
+
 }
 
 @RestController
 @Slf4j
 class CustomerRestController {
+
+    private static final Logger audit = LoggerFactory.getLogger("audit-logger");
 
     private final RestTemplate restTemplate;
 
@@ -55,6 +66,8 @@ class CustomerRestController {
         }
 
         log.info("getting customers from the customer-service...");
+
+        audit.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
 
         ResponseEntity<List<Customer>> customers = restTemplate.exchange("http://" + host + ":8082",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Customer>>() {});

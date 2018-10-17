@@ -16,7 +16,7 @@ public class EdgeServiceZuulApplication {
 
     @Bean
     public CurrentTraceContext currentTraceContext() {
-        return CustomSlf4jCustomCurrentTraceContext.create();
+        return CustomSlf4jCurrentTraceContext.create();
     }
 
 }

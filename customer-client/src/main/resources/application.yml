@@ -5,6 +5,7 @@ spring:
   sleuth:
     sampler:
       probability: 1.0
+    propagation-keys: trId
 
 server:
   port: 8081
@@ -12,3 +13,10 @@ server:
 #logging:
 #  level:
 #    org.springframework.cloud.sleuth: trace
+
+logging:
+  pattern:
+    console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint}
+    %clr([${spring.zipkin.service.name:${spring.application.name:-}},){red}%clr(%X{X-B3-TraceId:-},){yellow}%clr(%X{X-B3-SpanId:-},){cyan}%clr(%X{X-Span-Export:-}]){blue} %clr([%8.15t]){cyan}
+    %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"
+    file: "%d{yy-MM-dd E HH:mm:ss.SSS} %5p ${PID} --- [${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] [%t] %-40.40logger{39} : %m%n%wEx"
