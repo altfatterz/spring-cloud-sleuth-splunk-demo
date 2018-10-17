@@ -6,9 +6,7 @@ initialization performed by Boot
 -->
 
 <included>
-    <property name="AUDIT_FILE_LOG_PATTERN" value="%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint}
-    %clr([${spring.zipkin.service.name:${spring.application.name:-}},){magenta}%clr(%X{X-B3-TraceId:-},){red}%clr(%X{trId:-},){yellow}%clr(%X{X-B3-SpanId:-},){cyan}%clr(,%X{X-Span-Export:-}]){blue}%clr([%8.15t]){cyan}
-    %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"/>
+    <property name="AUDIT_FILE_LOG_PATTERN" value="${AUDIT_FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
     <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
