@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.cloud.sleuth.log.Slf4jCurrentTraceContext;
 
+/**
+ * Copy of {Slf4jCurrentTraceContext} adding the "trId" into the MDC.
+ */
 public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
 
     // Backward compatibility for all logging patterns
@@ -42,6 +45,8 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
     }
 
     @Override public Scope newScope(@Nullable TraceContext currentSpan) {
+        final String previousTrId = MDC.get("trId");
+
         final String previousTraceId = MDC.get("traceId");
         final String previousParentId = MDC.get("parentId");
         final String previousSpanId = MDC.get("spanId");
@@ -52,9 +57,9 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
         final String legacySpanExportable = MDC.get(LEGACY_EXPORTABLE_NAME);
 
         if (currentSpan != null) {
-            String traceIdString = currentSpan.traceIdString();
-
             MDC.put("trId", ExtraFieldPropagation.get(currentSpan, "trId"));
+
+            String traceIdString = currentSpan.traceIdString();
             MDC.put("traceId", traceIdString);
             MDC.put(LEGACY_TRACE_ID_NAME, traceIdString);
             String parentId = currentSpan.parentId() != null ?
@@ -76,6 +81,7 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
             }
         }
         else {
+            MDC.remove("trId");
             MDC.remove("traceId");
             MDC.remove("parentId");
             MDC.remove("spanId");
@@ -92,6 +98,7 @@ public class CustomSlf4jCustomCurrentTraceContext extends CurrentTraceContext {
             @Override public void close() {
                 log("Closing scope for span: {}", currentSpan);
                 scope.close();
+                replace("trId", previousTrId);
                 replace("traceId", previousTraceId);
                 replace("parentId", previousParentId);
                 replace("spanId", previousSpanId);
