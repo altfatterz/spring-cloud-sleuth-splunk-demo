@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+File appender logback configuration provided for import, equivalent to the programmatic
+initialization performed by Boot
+-->
+
+<included>
+    <property name="AUDIT_LOG_FILE" value="${AUDIT_LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/audit.log}"/>
+
+    <property name="AUDIT_FILE_LOG_PATTERN" value="%d{yy-MM-dd E HH:mm:ss.SSS} %5p [${springAppName},%X{trId:-}] %m%n"/>
+
+    <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${AUDIT_FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${AUDIT_LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${AUDIT_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>${AUDIT_LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+            <maxHistory>${AUDIT_LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+        </rollingPolicy>
+    </appender>
+</included>
